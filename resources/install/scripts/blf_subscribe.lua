@@ -86,7 +86,7 @@ local find_agent_status do
 	from v_call_center_agents t1 inner join v_domains t2 on t1.domain_uuid = t2.domain_uuid
 	where t2.domain_name = :domain_name and (t1.agent_name = :agent_name or t1.agent_id = :agent_name)
 	]]
-	
+
 	function find_agent_status(user)
 		local agent_name, domain_name = split_first(user, '@', true)
 		local _, short = split_first(agent_name, '+', true)
@@ -181,7 +181,7 @@ protocols.agent = function(event)
 		local call_center_agent_uuid, agent_status = find_agent_status(user)
 		if agent_status then
 			log.noticef("Find agent: %s status: %s", user, tostring(agent_status))
-			presence_in.turn_lamp(agent_status == "Available", to)
+			presence_in.turn_lamp(tostring(agent_status) == "Available", to)
 		else
 			log.warningf("Can not find agent status: %s", to)
 		end
